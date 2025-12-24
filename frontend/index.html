@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Test Target — Demo Shop</title>
+    <style>
+        :root{
+            --bg:#0f1724;
+            --card:#0b1220;
+            --muted:#94a3b8;
+            --accent:#7c3aed;
+            --accent-2:#06b6d4;
+            --glass: rgba(255,255,255,0.04);
+            --glass-2: rgba(255,255,255,0.02);
+        }
+        html,body{height:100%;}
+        body{
+            margin:0;
+            background: linear-gradient(180deg,#071025 0%, #071a2b 60%);
+            color:#e6eef8;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+        }
+
+        .container{max-width:1100px;margin:0 auto;padding:32px;}
+
+        header{display:flex;align-items:center;justify-content:space-between;gap:20px}
+        .brand{display:flex;align-items:center;gap:12px}
+        .logo{width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:white;box-shadow:0 6px 18px rgba(124,58,237,0.18)}
+        .brand h1{font-size:18px;margin:0}
+        nav{display:flex;gap:12px}
+        a.btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:8px;color:var(--muted);text-decoration:none;font-size:14px}
+        a.btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;border:none;box-shadow:0 6px 18px rgba(7,10,33,0.5)}
+
+        /* Hero */
+        .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;margin-top:28px;align-items:center}
+        .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));padding:28px;border-radius:14px;border:1px solid var(--glass);}
+        .hero h2{font-size:28px;margin:0 0 8px}
+        .hero p{color:var(--muted);margin:0 0 18px}
+        .cta-row{display:flex;gap:12px;align-items:center}
+        .search{display:flex;gap:8px}
+        .search input{padding:10px 12px;border-radius:10px;border:none;background:var(--glass-2);color:inherit;outline:none;width:320px}
+        .cta-sample{padding:10px 14px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+        /* Product Grid */
+        .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+        .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;border:1px solid var(--glass);box-shadow:0 8px 30px rgba(2,6,23,0.45);transition:transform .22s ease, box-shadow .22s ease}
+        .card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(2,6,23,0.6)}
+        .product-title{font-weight:600;font-size:15px}
+        .price{color:var(--accent);font-weight:700}
+        .product-actions{margin-top:12px;display:flex;gap:8px}
+        button.action{padding:8px 10px;border-radius:10px;border:none;background:var(--accent);color:white;cursor:pointer}
+        button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+        /* Cart Badge */
+        .cart{position:relative}
+        .badge{position:absolute;right:-6px;top:-8px;background:#ef4444;color:white;border-radius:999px;padding:3px 7px;font-size:12px}
+
+        /* Footer */
+        footer{margin-top:40px;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));border:1px solid var(--glass);text-align:center;color:var(--muted)}
+
+        /* Responsive */
+        @media (max-width:900px){
+            .hero{grid-template-columns:1fr;}
+            .grid{grid-template-columns:repeat(2,1fr)}
+            .search input{width:160px}
+        }
+        @media (max-width:600px){
+            .grid{grid-template-columns:1fr}
+            .hero{gap:16px}
+            .search input{width:120px}
+        }
+
+        /* subtle pulse for buttons */
+        .pulse{animation:pulse 1.6s infinite}
+        @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="brand">
+                <div class="logo">A</div>
+                <div>
+                    <h1>Demo Shop</h1>
+                    <div style="font-size:12px;color:var(--muted);margin-top:2px">Tracker integration test page</div>
+                </div>
+            </div>
+
+            <nav>
+                <a href="#" class="btn">Docs</a>
+                <a href="#" class="btn">Support</a>
+                <a href="#" class="btn primary cart">Cart <span class="badge" id="cart-count">0</span></a>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <div class="hero-card">
+                <h2>Shop demo for tracking</h2>
+                <p>Click buttons, navigate items, and experiment — events from this page will be captured by the tracker for your analytics dashboard.</p>
+
+                <div class="cta-row">
+                    <div class="search">
+                        <input id="search" placeholder="Search products or demo actions" />
+                        <button class="cta-sample" id="btn-sample">Quick demo</button>
+                    </div>
+
+                    <div style="margin-left:auto;display:flex;gap:8px">
+                        <button class="cta-sample" id="btn-random">Random Click</button>
+                        <a class="btn primary" id="view-heatmap" href="/dashboard">Open Dashboard</a>
+                    </div>
+                </div>
+
+                <div style="margin-top:18px;color:var(--muted);font-size:13px">Try: Add to cart, Buy, or click the Quick demo button to generate sample events.</div>
+            </div>
+
+            <div style="padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid var(--glass);">
+                <div style="font-size:13px;color:var(--muted);">Featured product</div>
+                <div style="display:flex;gap:12px;align-items:center;margin-top:12px">
+                    <div style="width:110px;height:110px;border-radius:12px;background:linear-gradient(135deg,#fde68a,#fb7185);display:flex;align-items:center;justify-content:center;font-weight:700;color:#111">25% off</div>
+                    <div>
+                        <div style="font-weight:700">Premium Analytics Widget</div>
+                        <div style="color:var(--muted);margin-top:6px">A compact widget to visualize user interactions.</div>
+                        <div style="margin-top:10px;font-weight:700;color:var(--accent)">$49</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid" id="products">
+            <!-- products will be injected by JS -->
+        </section>
+
+        <footer>
+            <div>Local test page — events posted to <span style="font-family:monospace;color:#e2e8f0">http://localhost:5000</span></div>
+            <div style="margin-top:6px;font-size:13px;color:var(--muted)">Use the analytics dashboard to view sessions and heatmaps.</div>
+        </footer>
+    </div>
+
+    <script>
+        // Configure the tracker endpoint without modifying tracker.js
+        // For Docker Compose local dev, this is the host-mapped backend port.
+        window.__ANALYTICS_API_BASE_URL__ = 'http://localhost:5000';
+
+        // Small product dataset for demo
+        const PRODUCTS = [
+            { id: 'A', name: 'Buy Item A', price: '$9.99', desc: 'Lightweight widget' },
+            { id: 'B', name: 'Buy Item B', price: '$14.99', desc: 'Advanced gadget' },
+            { id: 'C', name: 'Buy Item C', price: '$7.50', desc: 'Accessory pack' },
+            { id: 'D', name: 'Buy Item D', price: '$19.99', desc: 'Premium addon' },
+            { id: 'E', name: 'Buy Item E', price: '$4.99', desc: 'Mini item' },
+            { id: 'F', name: 'Buy Item F', price: '$29.99', desc: 'Deluxe set' },
+        ];
+
+        const productsEl = document.getElementById('products');
+        const cartCount = document.getElementById('cart-count');
+        let cart = 0;
+
+        function renderProducts() {
+            productsEl.innerHTML = '';
+            PRODUCTS.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="product-title">${p.name}</div>
+                    <div style="color:var(--muted);font-size:13px;margin-top:6px">${p.desc}</div>
+                    <div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between">
+                        <div class="price">${p.price}</div>
+                        <div class="product-actions">
+                            <button class="action" data-id="${p.id}">Add to cart</button>
+                            <button class="secondary" data-id="${p.id}">View</button>
+                        </div>
+                    </div>
+                `;
+                productsEl.appendChild(card);
+            });
+        }
+
+        function bindActions() {
+            productsEl.addEventListener('click', (e) => {
+                const btn = e.target.closest('button');
+                if (!btn) return;
+                const id = btn.getAttribute('data-id');
+                if (!id) return;
+
+                if (btn.classList.contains('action')) {
+                    cart += 1;
+                    cartCount.textContent = cart;
+                    btn.classList.add('pulse');
+                    setTimeout(() => btn.classList.remove('pulse'), 700);
+                }
+
+                if (btn.classList.contains('secondary')) {
+                    alert('Viewing product ' + id);
+                }
+            });
+
+            // quick demo / random click
+            document.getElementById('btn-sample').addEventListener('click', () => {
+                // simulate clicking first three buttons
+                const addBtns = Array.from(document.querySelectorAll('.action'));
+                addBtns.slice(0,3).forEach((b,i)=> { b.click(); });
+            });
+
+            document.getElementById('btn-random').addEventListener('click', () => {
+                const all = Array.from(document.querySelectorAll('.card'));
+                const random = all[Math.floor(Math.random()*all.length)];
+                if (random) {
+                    const btn = random.querySelector('.action');
+                    if (btn) btn.click();
+                }
+            });
+
+            document.getElementById('search').addEventListener('keydown', (e)=>{
+                if (e.key === 'Enter') {
+                    const q = e.target.value.toLowerCase();
+                    const match = PRODUCTS.find(p=> (p.name+ ' ' + p.desc).toLowerCase().includes(q));
+                    if (match) alert('Found: ' + match.name);
+                }
+            });
+        }
+
+        renderProducts();
+        bindActions();
+    </script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
